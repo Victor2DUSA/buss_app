@@ -1,0 +1,203 @@
+#:import DropDown kivy.uix.dropdown.DropDown
+#:import Window kivy.core.window.Window
+#:import StringProperty kivy.properties.StringProperty
+#:import hex kivy.utils.get_color_from_hex
+
+
+
+<SecondLayout>:
+    main_button: main_button
+    location_input_text: location_input.text
+
+
+    on_enter:
+        dropdown.dismiss()
+
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgb: 1, 1, 1  # Set the background color to white
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Bus times"
+            font_size: '24sp'
+            color: 0, 0, 0, 1
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.5, 'top': 0.95}
+
+        Label:
+            text: "Pick up details"
+            font_size: '24sp'
+            color: 0, 0, 0, 1
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.5, 'top': 0.85}
+
+        Button:
+            id: main_button
+            background_normal: 'image/Togglebutton/toggle_button.png'
+            background_down: 'image/Togglebutton/toggle_button.png'
+            size_hint: None, None
+            size: 40, 40  # Make the toggle button slightly bigger
+            pos_hint: {'x': 0.15, 'top': 0.94}
+            on_release: dropdown.open(self)
+
+        BoxLayout:
+            id: dropdown_container
+            pos_hint: {'x': 0.1, 'top': 0.9}
+            size_hint: None, None
+            height: 0
+
+            DropDown:
+                id: dropdown
+                auto_width: False
+                width: Window.width * 0.3  # Make the dropdown slightly smaller
+                max_height: Window.height * 0.2  # Adjust the max height
+                auto_dismiss: True  # Close the dropdown when clicking outside of it
+
+                Button:
+                    text: "Option 1"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release:
+                        dropdown.select(self.text)
+                        main_button.text = self.text
+
+                Button:
+                    text: "Option 2"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release:
+                        dropdown.select(self.text)
+                        main_button.text = self.text
+
+                Button:
+                    text: "Option 3"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release:
+                        dropdown.select(self.text)
+                        main_button.text = self.text
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: Window.width * 0.55, 40
+            pos_hint: {'x': 0.19, 'y': 0.65}
+            spacing: 40
+
+            Label:
+                text: "Location"
+                color: 0, 0, 0, 1
+                size_hint_x: None
+                width: self.texture_size[0]
+
+            TextInput:
+                id: location_input
+                hint_text: "Enter location"
+                multiline: False
+                write_tab: False
+                halign: 'left'
+                valign: 'middle'
+                font_size: '16sp'
+                padding_x: [6, 6]
+                size_hint_x: None
+                size_hint_y: None  # Set size_hint_y to None
+                width: self.parent.width - self.parent.children[1].width
+                height: '25dp'  # Set a specific height
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            pos_hint: {'center_x': 0.7, 'top': 0.65}  # Adjust the position
+            padding: 10,0  # Add spacing between elements
+
+            Button:
+                id: am_button
+                text: 'AM'
+                font_size: '14sp'
+                color: 0, 0, 0, 1
+                size_hint: None, None
+                width: '30dp'
+                height: '24dp'
+                on_press:
+                    root.selected_period = self.text
+                    self.background_color = 0.91, 0.95, 0.84, 1
+                    pm_button.background_color = 1, 1, 1, 1
+                background_normal: ''
+                background_down: ''
+                background_color: (0.91, 0.95, 0.84, 1) if self.state == 'normal' else (0.8, 0.86, 0.74, 1)
+                on_release:
+                    root.selected_period = 'AM'
+
+
+
+
+            Button:
+                id: pm_button
+                text: 'PM'
+                font_size: '14sp'
+                color: 0, 0, 0, 1
+                size_hint: None, None
+                width: '30dp'
+                height: '24dp'
+                background_normal: ''
+                background_down: ''
+                on_press:
+                    root.selected_period = self.text
+                    self.background_color = 0.91, 0.95, 0.84, 1
+                    am_button.background_color = 1, 1, 1, 1
+                
+                background_color: (0.91, 0.95, 0.84, 1) if self.state == 'normal' else (0.8, 0.86, 0.74, 1)
+                on_release:
+                    on_release: root.selected_period = 'PM'
+
+            
+            BoxLayout:
+                size_hint: None, None
+                padding: 40, 0
+                width: self.minimum_width
+                height: '24dp'
+            
+                Spinner:
+
+                    id: selection_spinner
+                    text: 'Select Time'
+                    values:['4-5', '5-6', '6-7', '8-9', '9-10', '11-12'] if root.selected_period == 'AM' else ['12-1', '1-2', '2-3', '3-4']  # Update this line
+                    font_size: '14sp'
+                    color: 0, 0, 0, 1
+                    size_hint: None, None
+                    width: '100dp'
+                    height: '24dp'
+                    background_normal: ''
+                    background_color: 1, 1, 1, 0  # Transparent background
+                    on_text: root.selected_time = self.text
+
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.91, 0.95, 0.84, 1  # Border color (#E8F3D6)
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 4
+        Button:
+            id: proceed_button
+            text: "Proceed"
+            size_hint: None, None
+            color: 0, 0, 0, 1  # Set the text color to black
+            size: dp(100), dp(40)
+            pos_hint: {'center_x': 0.5, 'top': 0.55}
+            disabled: True if not root.selected_time or not location_input.text or root.selected_time == "Select Time" else False
+            background_normal: ''
+            background_color: hex('#E8F3D6')
+            opacity: 1 if self.disabled == False else 0.5
+            on_release: app.root.current = 'third'  # Add this line to navigate to the third layout
+
+
+            
+
+
+

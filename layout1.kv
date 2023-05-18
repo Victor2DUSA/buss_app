@@ -1,0 +1,118 @@
+#:import Window kivy.core.window.Window
+#:import DropDown kivy.uix.dropdown.DropDown
+
+<FirstLayout>:
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgb: 1, 1, 1  # Set the background color to white
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            id: container
+            size_hint: None, None
+            width: Window.width * 0.8
+            height: Window.height * 0.42
+            pos_hint: {'center_x': 0.5, 'top': 0.99}
+
+            canvas.before:
+                Color:
+                    rgba: 0.91, 0.95, 0.84, 1  # Set the box color to #E8F3D6
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10,]
+
+            FloatLayout:
+                Label:
+                    text: "Bus times"
+                    font_size: '24sp'
+                    color: 0, 0, 0, 1
+                    size_hint: None, None
+                    size: self.texture_size
+                    pos_hint: {'center_x': 0.5, 'top': 0.95}
+
+                Button:
+                    id: main_button
+                    background_normal: 'image/Togglebutton/toggle_button.png'
+                    background_down: 'image/Togglebutton/toggle_button.png'
+                    size_hint: None, None
+                    size: 40, 40  # Make the toggle button slightly bigger
+                    pos_hint: {'x': 0.1, 'top': 0.9}
+                    on_release: dropdown.open(self)
+                    on_parent: dropdown.dismiss()  # Dismiss the dropdown when the parent is set
+
+                DropDown:
+                    id: dropdown
+                    auto_width: False
+                    width: container.width * 0.3  # Make the dropdown slightly smaller
+                    max_height: Window.height * 0.2  # Adjust the max height
+                    auto_dismiss: True  # Close the dropdown when clicking outside of it
+
+                    Button:
+                        text: "Option 1"
+                        size_hint_y: None
+                        height: '40dp'  # Make the button slightly smaller
+                        background_color: 1, 1, 1, 1  # Set the button background color to white
+                        on_release:
+                            dropdown.select(self.text)
+                            main_button.text = self.text
+
+                    Button:
+                        text: "Option 2"
+                        size_hint_y: None
+                        height: '40dp'  # Make the button slightly smaller
+                        background_color: 1, 1, 1, 1  # Set the button background color to white
+                        on_release:
+                            dropdown.select(self.text)
+                            main_button.text = self.text
+
+                    Button:
+                        text: "Option 3"
+                        size_hint_y: None
+                        height: '40dp'  # Make the button slightly smaller
+                        background_color: 1, 1, 1, 1  # Set the button background color to white
+                        on_release:
+                            dropdown.select(self.text)
+                            main_button.text = self.text
+
+                # Two buttons with color #FAAB78 aligned horizontally
+                Button:
+                    text: "Button 1"
+                    size_hint: None, None
+                    size: 150, 40
+                    pos_hint: {'x': 0.1, 'y': 0.4}
+                    background_color: 0, 0, 0, 0
+                    on_release:
+                        app.root.current = 'second'
+                        app.root.get_screen('second').ids.dropdown.dismiss()  # Add this line to dismiss the dropdown menu
+
+                    
+                    canvas.before:
+                        Color:
+                            rgba: 0.98, 0.67, 0.47, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [5,]
+                
+                Button:
+                    text: "Button 2"
+                    size_hint: None, None
+                    size: 150, 40
+                    pos_hint: {'x': 0.5, 'y': 0.4}
+                    background_color: 0, 0, 0, 0
+                    on_release:
+                        app.root.current = 'second'
+                        app.root.get_screen('second').ids.dropdown.dismiss()  # Add this line to dismiss the dropdown menu
+
+
+                    canvas.before:
+                        Color:
+                            rgba: 0.98, 0.67, 0.47, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [5,]

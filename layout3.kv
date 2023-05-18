@@ -1,0 +1,73 @@
+#:import DropDown kivy.uix.dropdown.DropDown
+#:import Window kivy.core.window.Window
+#:import BooleanProperty kivy.properties.BooleanProperty
+#:import Clock kivy.clock.Clock
+
+
+<ThirdLayout>:
+    main_button: main_button
+    dropdown: dropdown
+    dropdown_open: BooleanProperty(False)
+
+    on_parent:
+        if self.parent: dropdown.dismiss()
+
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgb: 1, 1, 1  # Set the background color to white
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Bus times"
+            font_size: '24sp'
+            color: 0, 0, 0, 1
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.5, 'top': 0.95}
+
+        Button:
+            id: main_button
+            background_normal: 'image/Togglebutton/toggle_button.png'
+            background_down: 'image/Togglebutton/toggle_button.png'
+            size_hint: None, None
+            size: 40, 40  # Make the toggle button slightly bigger
+            pos_hint: {'x': 0.15, 'top': 0.94}
+            on_release:
+                if not root.dropdown_open: Clock.schedule_once(lambda dt: dropdown.open(self), 0.1)
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: main_button.size
+            pos_hint: {'x': 0.15, 'top': 0.94}
+            on_parent: dropdown.bind(on_select=lambda instance, x: setattr(self, 'text', x))
+            on_parent: dropdown.bind(on_dismiss=root.dropdown_dismissed)
+
+            DropDown:
+                id: dropdown
+                auto_width: False
+                width: Window.width * 0.3  # Make the dropdown slightly smaller
+                max_height: Window.height * 0.2  # Adjust the max height
+                auto_dismiss: True  # Close the dropdown when clicking outside of it
+
+                Button:
+                    text: "Option 1"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release: dropdown.select(self.text)
+
+                Button:
+                    text: "Option 2"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release: dropdown.select(self.text)
+
+                Button:
+                    text: "Option 3"
+                    size_hint_y: None
+                    height: '40dp'  # Make the button slightly smaller
+                    on_release: dropdown.select(self.text)
+
