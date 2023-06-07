@@ -12,6 +12,7 @@ from kivy.properties import BooleanProperty
 
 
 
+
 # Set the application to automatically adapt to the phone screen size
 Config.set('graphics', 'width', 400)
 Config.set('graphics', 'height', 732)
@@ -61,6 +62,6 @@ class MyApp(App):
         Builder.load_file('layout3.kv')
 
         return Builder.load_file('main.kv')
-
+        
 if __name__ == '__main__':
     MyApp().run()

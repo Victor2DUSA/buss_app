@@ -79,40 +79,34 @@
                             main_button.text = self.text
 
                 # Two buttons with color #FAAB78 aligned horizontally
-                Button:
-                    text: "Button 1"
-                    size_hint: None, None
-                    size: 150, 40
-                    pos_hint: {'x': 0.1, 'y': 0.4}
-                    background_color: 0, 0, 0, 0
-                    on_release:
-                        app.root.current = 'second'
-                        app.root.get_screen('second').ids.dropdown.dismiss()  # Add this line to dismiss the dropdown menu
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: Window.width * 0.55, 40
+            pos_hint: {'x': 0.19, 'y': 0.75}
+            spacing: 40
 
-                    
-                    canvas.before:
-                        Color:
-                            rgba: 0.98, 0.67, 0.47, 1
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [5,]
-                
-                Button:
-                    text: "Button 2"
-                    size_hint: None, None
-                    size: 150, 40
-                    pos_hint: {'x': 0.5, 'y': 0.4}
-                    background_color: 0, 0, 0, 0
-                    on_release:
-                        app.root.current = 'second'
-                        app.root.get_screen('second').ids.dropdown.dismiss()  # Add this line to dismiss the dropdown menu
+            Label:
+                text: "Location"
+                color: 0, 0, 0, 1
+                size_hint_x: None
+                width: self.texture_size[0]
 
+            TextInput:
+                id: location_input
+                hint_text: "Enter location"
+                multiline: False
+                write_tab: False
+                halign: 'left'
+                valign: 'middle'
+                font_size: '16sp'
+                padding_x: [6, 6]
+                size_hint_x: None
+                size_hint_y: None
+                width: self.parent.width - self.parent.children[1].width
+                height: '25dp'
+                on_text_validate: dropdown.open(self) if len(self.text) > 0 else dropdown.dismiss()
 
-                    canvas.before:
-                        Color:
-                            rgba: 0.98, 0.67, 0.47, 1
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [5,]
+    
+
+            
